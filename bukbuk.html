@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BukBuk - Fresh Meat Delivery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-fade-in { animation: fadeIn 1s ease-out; }
+        .animate-bounce { animation: bounce 2s infinite; }
+        .animate-pulse { animation: pulse 2s infinite; }
+        .hover-scale:hover { transform: scale(1.05); }
+        .hover-scale { transition: transform 0.3s ease; }
+        .gradient-text {
+            background: linear-gradient(to right, #dc2626, #ea580c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glow-button {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+            transform: scale(1.05);
+        }
+        .page { display: none; }
+        .page.active { display: block; }
+        .cart-bounce {
+            animation: bounce 0.5s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50">
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-utensils text-2xl text-red-600"></i>
+                <h1 class="text-2xl font-bold text-red-600">BukBuk</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="showPage('home')" class="border border-red-500 text-red-600 hover:bg-red-50 px-4 py-2 rounded-lg transition-all duration-300" id="home-btn">
+                    Home
+                </button>
+                <button onclick="showPage('menu')" class="border border-red-500 text-red-600 hover:bg-red-50 px-4 py-2 rounded-lg transition-all duration-300" id="menu-btn">
+                    Menu
+                </button>
+                <button onclick="showPage('profile')" class="border border-red-500 text-red-600 hover:bg-red-50 px-4 py-2 rounded-lg transition-all duration-300" id="profile-btn">
+                    Profile
+                </button>
+                <div class="relative" id="cart-button-container" style="display: none;">
+                    <button onclick="showCart()" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-300 glow-button">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        Cart (<span id="cartCount">0</span>)
+                    </button>
+                </div>
+                <button onclick="showLogin()" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover-scale animate-pulse glow-button" id="login-btn">
+                    Login / Sign Up
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HOME PAGE -->
+    <div id="home-page" class="page active">
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden py-20">
+            <div class="container mx-auto px-4 text-center">
+                <div class="animate-fade-in">
+                    <h1 class="text-5xl md:text-7xl font-bold gradient-text mb-6">
+                        BukBuk
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-700 mb-8 animate-fade-in">
+                        Fresh Chicken, Mutton & Kabab Delivered to Your Door
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4 mb-12">
+                        <span class="inline-flex items-center rounded-full bg-green-100 text-green-800 px-4 py-2 text-lg">
+                            <i class="fas fa-clock mr-2"></i>
+                            30 Min Delivery
+                        </span>
+                        <span class="inline-flex items-center rounded-full bg-blue-100 text-blue-800 px-4 py-2 text-lg">
+                            <i class="fas fa-star mr-2"></i>
+                            Premium Quality
+                        </span>
+                        <span class="inline-flex items-center rounded-full bg-purple-100 text-purple-800 px-4 py-2 text-lg">
+                            <i class="fas fa-truck mr-2"></i>
+                            Free Delivery
+                        </span>
+                    </div>
+                    <button onclick="showLogin()" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white text-xl px-8 py-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 animate-bounce glow-button">
+                        Order Now
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-16 bg-white/50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Why Choose BukBuk?</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover-scale p-6">
+                        <div class="text-center">
+                            <div class="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-star text-2xl text-red-600"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4">Premium Quality</h3>
+                            <p class="text-gray-600">
+                                Fresh, halal-certified meat sourced from trusted suppliers with the highest quality standards.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover-scale p-6">
+                        <div class="text-center">
+                            <div class="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-clock text-2xl text-green-600"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4">Fast Delivery</h3>
+                            <p class="text-gray-600">
+                                Get your fresh meat delivered within 30 minutes to your doorstep with our express delivery service.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover-scale p-6">
+                        <div class="text-center">
+                            <div class="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-truck text-2xl text-blue-600"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4">Free Delivery</h3>
+                            <p class="text-gray-600">
+                                Enjoy free delivery on all orders above ₹500. No hidden charges, just fresh meat at your door.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="py-16 bg-gradient-to-r from-red-600 to-orange-600 text-white">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl font-bold mb-8">Contact Us</h2>
+                <div class="flex flex-wrap justify-center gap-8">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-phone"></i>
+                        <span>+91 9876543210</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-envelope"></i>
+                        <span>order@bukbuk.com</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Delhi NCR</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- MENU PAGE -->
+    <div id="menu-page" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <h1 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
+                Fresh Meat Menu
+            </h1>
+
+            <!-- Menu Categories -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-white/50 rounded-full p-1 flex space-x-1">
+                    <button onclick="showCategory('chicken')" id="chicken-tab" class="px-6 py-2 rounded-full bg-red-500 text-white transition-all duration-300">
+                        Chicken
+                    </button>
+                    <button onclick="showCategory('mutton')" id="mutton-tab" class="px-6 py-2 rounded-full text-red-600 hover:bg-red-50 transition-all duration-300">
+                        Mutton
+                    </button>
+                    <button onclick="showCategory('kabab')" id="kabab-tab" class="px-6 py-2 rounded-full text-red-600 hover:bg-red-50 transition-all duration-300">
+                        Kabab
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chicken Menu -->
+            <div id="chicken-menu" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover-scale animate-fade-in overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-orange-200 to-red-200 flex items-center justify-center">
+                        <i class="fas fa-drumstick-bite text-6xl text-red-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Whole Chicken</h3>
+                        <p class="text-gray-600 mb-4">Fresh whole chicken, perfect for family meals</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₹280/kg</span>
+                            <button onclick="addToCart('Whole Chicken', 280)" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-300 glow-button">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover-scale animate-fade-in overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-orange-200 to-red-200 flex items-center justify-center">
+                        <i class="fas fa-cut text-6xl text-red-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Chicken Curry Cut</h3>
+                        <p class="text-gray-600 mb-4">Pre-cut chicken pieces for easy cooking</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₹320/kg</span>
+                            <button onclick="addToCart('Chicken Curry Cut', 320)" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-300 glow-button">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover-scale animate-fade-in overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-orange-200 to-red-200 flex items-center justify-center">
+                        <i class="fas fa-bone text-6xl text-red-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Chicken Breast</h3>
+                        <p class="text-gray-600 mb-4">Boneless chicken breast, high protein</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₹420/kg</span>
+                            <button onclick="addToCart('Chicken Breast', 420)" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-300 glow-button">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mutton Menu -->
+            <div id="mutton-menu" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover-scale animate-fade-in overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-red-200 to-orange-200 flex items-center justify-center">
+                        <i class="fas fa-cut text-6xl text-red-700"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Mutton Curry Cut</h3>
+                        <p class="text-gray-600 mb-4">Fresh mutton pieces with bone</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₹680/kg</span>
+                            <button onclick="addToCart('Mutton Curry Cut', 680)" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-300 glow-button">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover-scale animate-fade-in overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-red-200 to-orange-200 flex items-center justify-center">
+                        <i class="fas fa-bone text-6xl text-red-700"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Mutton Boneless</h3>
+                        <p class="text-gray-600 mb-4">Premium boneless mutton pieces</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₹820/kg</span>
+                            <button onclick="addToCart('Mutton Boneless', 820)" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-300 glow-button">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover-scale animate-fade-in overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-red-200 to-orange-200 flex items-center justify-center">
+                        <i class="fas fa-fire text-6xl text-red-700"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Mutton Keema</h3>
+                        <p class="text-gray-600 mb-4">Fresh minced mutton</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₹720/kg</span>
+                            <button onclick="addToCart('Mutton Keema', 720)" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-300 glow-button">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kabab Menu -->
+            <div id="kabab-menu" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover-scale animate-fade-in overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-yellow-200 to-red-200 flex items-center justify-center">
+                        <i class="fas fa-fire-alt text-6xl text-orange-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Seekh Kabab</h3>
+                        <p class="text-gray-600 mb-4">Spiced minced meat on skewers</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₹380/kg</span>
+                            <button onclick="addToCart('Seekh Kabab', 380)" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-300 glow-button">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover-scale animate-fade-in overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-yellow-200 to-red-200 flex items-center justify-center">
+                        <i class="fas fa-pepper-hot text-6xl text-orange-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Chicken Tikka</h3>
+                        <p class="text-gray-600 mb-4">Marinated chicken pieces</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₹450/kg</span>
+                            <button onclick="addToCart('Chicken Tikka', 450)" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-300 glow-button">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover-scale animate-fade-in overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-yellow-200 to-red-200 flex items-center justify-center">
+                        <i class="fas fa-utensils text-6xl text-orange-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Shami Kabab</h3>
+                        <p class="text-gray-600 mb-4">Traditional spiced patties</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₹320/piece</span>
+                            <button onclick="addToCart('Shami Kabab', 320)" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-300 glow-button">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div id="profile-page" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+                    <div class="bg-gradient-to-r from-red-500 to-orange-500 text-white p-8 text-center">
+                        <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-user text-4xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold" id="profileTitle">My Profile</h2>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="space-y-6">
+                            <div class="space-y-2">
+                                <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                                <div class="relative">
+                                    <i class="fas fa-user absolute left-3 top-3 text-gray-400"></i>
+                                    <input type="text" id="name" value="John Doe" disabled class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <div class="relative">
+                                    <i class="fas fa-envelope absolute left-3 top-3 text-gray-400"></i>
+                                    <input type="email" id="email" value="john@example.com" disabled class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                                <div class="relative">
+                                    <i class="fas fa-phone absolute left-3 top-3 text-gray-400"></i>
+                                    <input type="tel" id="phone" value="+91 9876543210" disabled class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="address" class="block text-sm font-medium text-gray-700">Delivery Address</label>
+                                <div class="relative">
+                                    <i class="fas fa-map-marker-alt absolute left-3 top-3 text-gray-400"></i>
+                                    <input type="text" id="address" value="" placeholder="Enter your delivery address" disabled class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4 pt-4" id="profileActions">
+                                <button onclick="toggleEdit()" class="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white py-3 rounded-lg transition-all duration-300 glow-button">
+                                    <i class="fas fa-edit mr-2"></i>
+                                    <span id="editButtonText">Edit Profile</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order History Section -->
+                <div class="bg-white rounded-lg shadow-xl mt-8">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">Order History</h3>
+                        <div class="text-center py-8 text-gray-500">
+                            <i class="fas fa-shopping-bag text-4xl mb-4"></i>
+                            <p>No orders yet. Start ordering to see your history!</p>
+                            <button onclick="showPage('menu')" class="mt-4 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-6 py-2 rounded-lg transition-all duration-300 glow-button">
+                                Browse Menu
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4 p-6">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-red-600">Welcome to BukBuk</h2>
+            </div>
+            
+            <div class="bg-white rounded-lg">
+                <div class="text-center mb-4">
+                    <h3 class="text-xl font-bold" id="formTitle">Login</h3>
+                    <p class="text-gray-600" id="formDescription">Welcome back! Please login to continue.</p>
+                </div>
+                
+                <form id="loginForm" class="space-y-4">
+                    <div id="nameField" class="space-y-2 hidden">
+                        <label for="loginName" class="block text-sm font-medium">Full Name</label>
+                        <div class="relative">
+                            <i class="fas fa-user absolute left-3 top-3 text-gray-400"></i>
+                            <input type="text" id="loginName" placeholder="Enter your full name" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label for="loginEmail" class="block text-sm font-medium">Email</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-3 top-3 text-gray-400"></i>
+                            <input type="email" id="loginEmail" placeholder="Enter your email" required class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                        </div>
+                    </div>
+
+                    <div id="phoneField" class="space-y-2 hidden">
+                        <label for="loginPhone" class="block text-sm font-medium">Phone Number</label>
+                        <div class="relative">
+                            <i class="fas fa-phone absolute left-3 top-3 text-gray-400"></i>
+                            <input type="tel" id="loginPhone" placeholder="Enter your phone number" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="password" class="block text-sm font-medium">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-3 top-3 text-gray-400"></i>
+                            <input type="password" id="password" placeholder="Enter your password" required class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white py-3 rounded-lg transition-all duration-300 glow-button">
+                        <span id="submitText">Login</span>
+                    </button>
+                </form>
+
+                <div class="text-center mt-4">
+                    <button onclick="toggleForm()" class="text-red-600 hover:text-red-700 underline">
+                        <span id="toggleText">Don't have an account? Sign up</span>
+                    </button>
+                </div>
+            </div>
+            
+            <button onclick="hideLogin()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4 p-6 max-h-96 overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-red-600">Shopping Cart</h2>
+                <button onclick="hideCart()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="cartItems" class="space-y-4">
+                <p class="text-gray-500 text-center">Your cart is empty</p>
+            </div>
+            
+            <div class="mt-6 pt-4 border-t">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-bold">Total: ₹<span id="cartTotal">0</span></span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-3 rounded-lg transition-all duration-300 glow-button">
+                    Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isLogin = true;
+        let isEditing = false;
+        let cart = [];
+        let currentCategory = 'chicken';
+        let isLoggedIn = false;
+
+        // Page Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId + '-page').classList.add('active');
+            
+            // Update navigation buttons
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('bg-red-500', 'text-white');
+                btn.classList.add('border', 'border-red-500', 'text-red-600');
+            });
+            
+            const activeBtn = document.getElementById(pageId + '-btn');
+            if (activeBtn) {
+                activeBtn.classList.add('bg-red-500', 'text-white');
+                activeBtn.classList.remove('border', 'border-red-500', 'text-red-600');
+            }
+        }
+
+        // Login Modal Functions
+        function showLogin() {
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+
+        function hideLogin() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function toggleForm() {
+            isLogin = !isLogin;
+            const nameField = document.getElementById('nameField');
+            const phoneField = document.getElementById('phoneField');
+            const formTitle = document.getElementById('formTitle');
+            const formDescription = document.getElementById('formDescription');
+            const submitText = document.getElementById('submitText');
+            const toggleText = document.getElementById('toggleText');
+
+            if (isLogin) {
+                nameField.classList.add('hidden');
+                phoneField.classList.add('hidden');
+                formTitle.textContent = 'Login';
+                formDescription.textContent = 'Welcome back! Please login to continue.';
+                submitText.textContent = 'Login';
+                toggleText.textContent = "Don't have an account? Sign up";
+            } else {
+                nameField.classList.remove('hidden');
+                phoneField.classList.remove('hidden');
+                formTitle.textContent = 'Create Account';
+                formDescription.textContent = 'Join us for fresh meat delivery!';
+                submitText.textContent = 'Create Account';
+                toggleText.textContent = 'Already have an account? Login';
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('password').value;
+            
+            if (email && password) {
+                isLoggedIn = true;
+                alert('Welcome to BukBuk!');
+                document.getElementById('login-btn').style.display = 'none';
+                document.getElementById('cart-button-container').style.display = 'block';
+                hideLogin();
+                showPage('menu');
+            }
+        });
+
+        // Profile Functions
+        function toggleEdit() {
+            isEditing = !isEditing;
+            const inputs = ['name', 'email', 'phone', 'address'];
+            const profileTitle = document.getElementById('profileTitle');
+            const profileActions = document.getElementById('profileActions');
+
+            if (isEditing) {
+                inputs.forEach(id => {
+                    const input = document.getElementById(id);
+                    input.disabled = false;
+                    input.classList.remove('bg-gray-50');
+                    input.classList.add('bg-white');
+                });
+                
+                profileTitle.textContent = 'Edit Profile';
+                profileActions.innerHTML = `
+                    <button onclick="saveProfile()" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-3 rounded-lg transition-all duration-300 glow-button">
+                        <i class="fas fa-save mr-2"></i>
+                        Save Changes
+                    </button>
+                    <button onclick="cancelEdit()" class="flex-1 border border-gray-300 text-gray-700 hover:bg-gray-50 py-3 rounded-lg transition-all duration-300">
+                        Cancel
+                    </button>
+                `;
+            } else {
+                inputs.forEach(id => {
+                    const input = document.getElementById(id);
+                    input.disabled = true;
+                    input.classList.add('bg-gray-50');
+                    input.classList.remove('bg-white');
+                });
+                
+                profileTitle.textContent = 'My Profile';
+                profileActions.innerHTML = `
+                    <button onclick="toggleEdit()" class="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white py-3 rounded-lg transition-all duration-300 glow-button">
+                        <i class="fas fa-edit mr-2"></i>
+                        <span id="editButtonText">Edit Profile</span>
+                    </button>
+                `;
+            }
+        }
+
+        function saveProfile() {
+            alert('Profile updated successfully!');
+            toggleEdit();
+        }
+
+        function cancelEdit() {
+            toggleEdit();
+        }
+
+        // Menu Functions
+        function showCategory(category) {
+            document.getElementById('chicken-menu').classList.add('hidden');
+            document.getElementById('mutton-menu').classList.add('hidden');
+            document.getElementById('kabab-menu').classList.add('hidden');
+            
+            document.getElementById('chicken-tab').classList.remove('bg-red-500', 'text-white');
+            document.getElementById('chicken-tab').classList.add('text-red-600');
+            document.getElementById('mutton-tab').classList.remove('bg-red-500', 'text-white');
+            document.getElementById('mutton-tab').classList.add('text-red-600');
+            document.getElementById('kabab-tab').classList.remove('bg-red-500', 'text-white');
+            document.getElementById('kabab-tab').classList.add('text-red-600');
+            
+            document.getElementById(category + '-menu').classList.remove('hidden');
+            document.getElementById(category + '-tab').classList.add('bg-red-500', 'text-white');
+            document.getElementById(category + '-tab').classList.remove('text-red-600');
+            
+            currentCategory = category;
+        }
+
+        // Cart Functions
+        function addToCart(itemName, price) {
+            if (!isLoggedIn) {
+                alert('Please login to add items to cart');
+                showLogin();
+                return;
+            }
+
+            const existingItem = cart.find(item => item.name === itemName);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: itemName,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            
+            updateCartDisplay();
+            
+            const cartButton = document.querySelector('button[onclick="showCart()"]');
+            cartButton.classList.add('cart-bounce');
+            setTimeout(() => {
+                cartButton.classList.remove('cart-bounce');
+            }, 500);
+        }
+
+        function updateCartDisplay() {
+            const cartCount = document.getElementById('cartCount');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p class="text-gray-500 text-center">Your cart is empty</p>';
+                cartTotal.textContent = '0';
+                return;
+            }
+            
+            let total = 0;
+            cartItems.innerHTML = cart.map(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                return `
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <div>
+                            <h4 class="font-medium">${item.name}</h4>
+                            <p class="text-sm text-gray-600">₹${item.price} x ${item.quantity}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold">₹${itemTotal}</span>
+                            <button onclick="removeFromCart('${item.name}')" class="text-red-500 hover:text-red-700">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            cartTotal.textContent = total;
+        }
+
+        function removeFromCart(itemName) {
+            cart = cart.filter(item => item.name !== itemName);
+            updateCartDisplay();
+        }
+
+        function showCart() {
+            document.getElementById('cartModal').classList.remove('hidden');
+        }
+
+        function hideCart() {
+            document.getElementById('cartModal').classList.add('hidden');
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            alert(`Order placed successfully! Total: ₹${total}\nDelivery in 30 minutes!`);
+            cart = [];
+            updateCartDisplay();
+            hideCart();
+        }
+
+        // Close modals when clicking outside
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideLogin();
+            }
+        });
+
+        document.getElementById('cartModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideCart();
+            }
+        });
+    </script>
+</body>
+</html>
